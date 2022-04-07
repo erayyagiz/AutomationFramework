@@ -18,7 +18,7 @@ public class ConfigReader {
         //Create Property Object
         Properties p = new Properties();
         //Load the Property file available in same package
-        InputStream inputStream = new FileInputStream("src/main/resources/config.properties");
+        InputStream inputStream = new FileInputStream("src/main/java/resources/config.properties");
         p.load(inputStream);
         //Browser Type
         Settings.BrowserType = BrowserType.valueOf(p.getProperty("BrowserType"));

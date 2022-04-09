@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,23 +28,19 @@ public class DriverContext {
     long timeOutInSeconds = 90L;
     String parentWindowId = null;
     ArrayList<String> windowList = new ArrayList();
-    public static WebDriver Driver;
-    public static Browser Browser;
 
-
-    public static void setDriver(WebDriver driver) {
-        Driver = driver;
+    public DriverContext() {
     }
 
     public void navigateToUrl(String url) {
-        Driver.get(url);
+        LocalDriverContext.getDriver().get(url);
         this.driverContextLogger.info("Driver Navigated to URL: " + url);
     }
 
     public void waitForPageToLoad() {
         try {
-            WebDriverWait wait = new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds));
-            JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver;
+            WebDriverWait wait = new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds));
+            JavascriptExecutor jsExecutor = (JavascriptExecutor)LocalDriverContext.getDriver();
             ExpectedCondition jsLoad = (webDriver) -> {
                 return jsExecutor.executeScript("return document.readyState", new Object[0]).toString().equals("complete");
             };
@@ -54,18 +49,18 @@ public class DriverContext {
             do {
                 wait.until(jsLoad);
                 jsReadyState = jsExecutor.executeScript("return document.readyState", new Object[0]).toString();
-            } while (!jsReadyState.equalsIgnoreCase("complete"));
+            } while(!jsReadyState.equalsIgnoreCase("complete"));
 
             this.driverContextLogger.info("Sayfa icindeki Java Scriptler basarili sekilde yuklenmistir..");
             ExpectedCondition jQueryLoad = (webDriver) -> {
-                return (Long) jsExecutor.executeScript("return jQuery.active", new Object[0]) == 0L;
+                return (Long)jsExecutor.executeScript("return jQuery.active", new Object[0]) == 0L;
             };
 
             String jQueryCount;
             do {
                 wait.until(jQueryLoad);
                 jQueryCount = jsExecutor.executeScript("return jQuery.active", new Object[0]).toString();
-            } while (Integer.parseInt(jQueryCount) != 0);
+            } while(Integer.parseInt(jQueryCount) != 0);
 
             this.driverContextLogger.info("Sayfa icindeki JQuery'ler basarili sekilde yuklenmistir..");
         } catch (Throwable var6) {
@@ -74,10 +69,9 @@ public class DriverContext {
         }
 
     }
-
     public void waitUntilElementVisible(WebElement elementFindBy) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.visibilityOf(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -88,7 +82,7 @@ public class DriverContext {
 
     public void waitUntilElementTextVisible(WebElement elementFindBy, String text) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.textToBePresentInElement(elementFindBy, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -99,7 +93,7 @@ public class DriverContext {
 
     public boolean waitUntilTextDisplayedEqualsIgnoreCaseByLocator(By locator, String text) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             return (Boolean) wait.until(this.checkLocatorTextEqualsIgnoreCase(locator, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -110,7 +104,7 @@ public class DriverContext {
 
     public boolean waitUntilTextDisplayedContainsByLocator(By locator, String text) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             return (Boolean) wait.until(this.checkLocatorTextContains(locator, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -129,7 +123,7 @@ public class DriverContext {
 
     public boolean checkIsDisplayedBylocator(By locator) {
         try {
-            return Driver.findElement(locator).isDisplayed();
+            return LocalDriverContext.getDriver().findElement(locator).isDisplayed();
         } catch (Throwable var3) {
             return false;
         }
@@ -153,7 +147,7 @@ public class DriverContext {
 
     public void waitUntilElementEnabled(By locator) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until((webDriver) -> {
                 return webDriver.findElement(locator).isEnabled();
             });
@@ -166,7 +160,7 @@ public class DriverContext {
 
     public void waitUntilPresenceOfElementByLocator(By locator) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -177,7 +171,7 @@ public class DriverContext {
 
     public void waitUntilElementClickable(WebElement elementFindBy) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.elementToBeClickable(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -188,18 +182,18 @@ public class DriverContext {
 
     public boolean waitUntilUrlContains(String expectedUrl) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             return (Boolean) wait.until(ExpectedConditions.urlContains(expectedUrl));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Beklenen URL: " + expectedUrl + " Driver URL: " + Driver.getCurrentUrl() + "!!");
+            Assert.fail("Beklenen URL: " + expectedUrl + " Driver URL: " + LocalDriverContext.getDriver().getCurrentUrl() + "!!");
             return false;
         }
     }
 
     public void waitUntilFrameToBeAvailableAndSwitchToItByName(String frameName) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameName));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -210,7 +204,7 @@ public class DriverContext {
 
     public void waitUntilFrameToBeAvailableAndSwitchToItByIndex(int frameIndex) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameIndex));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -221,7 +215,7 @@ public class DriverContext {
 
     public void waitUntilElementClickableWithExactTime(WebElement element, int exactTimeInSecond) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds((long) exactTimeInSecond))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) exactTimeInSecond)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds((long) exactTimeInSecond))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) exactTimeInSecond)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -232,7 +226,7 @@ public class DriverContext {
 
     public void waitUntilVisibleElementWithExactTime(WebElement element, int exactTimeInSecond) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds((long) exactTimeInSecond))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) exactTimeInSecond)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds((long) exactTimeInSecond))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) exactTimeInSecond)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -243,7 +237,7 @@ public class DriverContext {
 
     public boolean waitUntilElementAttributeContainsValue(WebElement element, String attribute, String expectedValue) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             return (Boolean) wait.until(ExpectedConditions.attributeContains(element, attribute, expectedValue));
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
@@ -254,7 +248,7 @@ public class DriverContext {
 
     public void waitUntilElementInVisible(WebElement elementFindBy) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.invisibilityOf(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -265,7 +259,7 @@ public class DriverContext {
 
     public void waitUntilSelectOptionsPopulated(Select select) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until((input) -> {
                 List<WebElement> options = select.getOptions();
                 return options.size() >= 1 ? select : null;
@@ -279,18 +273,18 @@ public class DriverContext {
 
     public void switchTabByGivenTitle(String title) {
         try {
-            Set<String> allTabs = Driver.getWindowHandles();
+            Set<String> allTabs = LocalDriverContext.getDriver().getWindowHandles();
             Iterator var3 = allTabs.iterator();
 
             while (var3.hasNext()) {
                 String eachTab = (String) var3.next();
-                Driver.switchTo().window(eachTab);
-                if (Driver.getTitle().contains(title)) {
+                LocalDriverContext.getDriver().switchTo().window(eachTab);
+                if (LocalDriverContext.getDriver().getTitle().contains(title)) {
                     break;
                 }
             }
 
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.titleContains(title));
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
@@ -301,9 +295,9 @@ public class DriverContext {
 
     public void getLatestWindow() {
         try {
-            this.parentWindowId = Driver.getWindowHandle();
+            this.parentWindowId = LocalDriverContext.getDriver().getWindowHandle();
             this.driverContextLogger.info("Parent Window Id: " + this.parentWindowId);
-            Set<String> handles = Driver.getWindowHandles();
+            Set<String> handles = LocalDriverContext.getDriver().getWindowHandles();
             Iterator var2 = handles.iterator();
 
             while (var2.hasNext()) {
@@ -312,7 +306,7 @@ public class DriverContext {
                 this.windowList.add(this.windowList.size(), window);
             }
 
-            Driver.switchTo().window((String) this.windowList.get(this.windowList.size() - 1));
+            LocalDriverContext.getDriver().switchTo().window((String) this.windowList.get(this.windowList.size() - 1));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
             Assert.fail("Yeni sayfaya veya window'a gecerken HATA olustu !!");
@@ -322,7 +316,7 @@ public class DriverContext {
 
     public void returnParentWindow() {
         try {
-            Driver.switchTo().window(this.parentWindowId);
+            LocalDriverContext.getDriver().switchTo().window(this.parentWindowId);
         } catch (Throwable var2) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var2));
             Assert.fail("Ana sayfaya veya window'a gecerken HATA olustu !!");
@@ -332,7 +326,7 @@ public class DriverContext {
 
     public boolean checkUrlIsOpened(String url) {
         try {
-            Iterator tabIterator = Driver.getWindowHandles().iterator();
+            Iterator tabIterator = LocalDriverContext.getDriver().getWindowHandles().iterator();
 
             do {
                 if (!tabIterator.hasNext()) {
@@ -340,8 +334,8 @@ public class DriverContext {
                 }
 
                 String eachTab = (String) tabIterator.next();
-                Driver.switchTo().window(eachTab);
-            } while (!Driver.getCurrentUrl().trim().equalsIgnoreCase(url.trim()));
+                LocalDriverContext.getDriver().switchTo().window(eachTab);
+            } while (!LocalDriverContext.getDriver().getCurrentUrl().trim().equalsIgnoreCase(url.trim()));
 
             return true;
         } catch (Throwable var4) {
@@ -353,7 +347,7 @@ public class DriverContext {
 
     public void findAndScrollWebElement(WebElement element) {
         try {
-            JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver;
+            JavascriptExecutor jsExecutor = (JavascriptExecutor) LocalDriverContext.getDriver();
             jsExecutor.executeScript("arguments[0].scrollIntoView(true);", new Object[]{element});
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -364,7 +358,7 @@ public class DriverContext {
 
     public void scrollInWindowByPixels(int x, int y) {
         try {
-            JavascriptExecutor jsExecutor = (JavascriptExecutor) Driver;
+            JavascriptExecutor jsExecutor = (JavascriptExecutor) LocalDriverContext.getDriver();
             jsExecutor.executeScript("window.scrollBy(" + x + "," + y + ")", new Object[0]);
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -375,7 +369,7 @@ public class DriverContext {
 
     public void dragAndDropWebElement(WebElement from, WebElement to) {
         try {
-            Actions action = new Actions(Driver);
+            Actions action = new Actions(LocalDriverContext.getDriver());
             action.dragAndDrop(from, to).build().perform();
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -386,7 +380,7 @@ public class DriverContext {
 
     public void doubleClickViaActions(WebElement element) {
         try {
-            Actions builder = new Actions(Driver);
+            Actions builder = new Actions(LocalDriverContext.getDriver());
             builder.moveToElement(element).doubleClick().build().perform();
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -397,7 +391,7 @@ public class DriverContext {
 
     public List<WebElement> getListOfElement(By locator, int timeOutInSeconds) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(Driver, Duration.ofSeconds((long) timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds((long) timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
             List<WebElement> webElementList = (List) wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
             return webElementList;
         } catch (Throwable var5) {
@@ -411,7 +405,7 @@ public class DriverContext {
         WebElement element = null;
 
         try {
-            element = Driver.findElement(locator);
+            element = LocalDriverContext.getDriver().findElement(locator);
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
             Assert.fail("Element bulunamadı edilememistir !!");
@@ -421,7 +415,7 @@ public class DriverContext {
     }
 
     public boolean isElementPresent(By by, int timeOutInSeconds) {
-        FluentWait wait = (new FluentWait(Driver)).withTimeout(Duration.ofSeconds((long) timeOutInSeconds)).pollingEvery(Duration.ofMillis(500L)).ignoring(NotFoundException.class).ignoring(NoSuchElementException.class);
+        FluentWait wait = (new FluentWait(LocalDriverContext.getDriver())).withTimeout(Duration.ofSeconds((long) timeOutInSeconds)).pollingEvery(Duration.ofMillis(500L)).ignoring(NotFoundException.class).ignoring(NoSuchElementException.class);
 
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(by));
@@ -445,7 +439,7 @@ public class DriverContext {
 
     public void clickViaActions(WebElement element) {
         try {
-            Actions builder = new Actions(Driver);
+            Actions builder = new Actions(LocalDriverContext.getDriver());
             builder.moveToElement(element).click().build().perform();
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -456,7 +450,7 @@ public class DriverContext {
 
     public void clickWebElementJS(WebElement element) {
         try {
-            JavascriptExecutor executor = (JavascriptExecutor) Driver;
+            JavascriptExecutor executor = (JavascriptExecutor) LocalDriverContext.getDriver();
             executor.executeScript("arguments[0].click();", new Object[]{element});
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));

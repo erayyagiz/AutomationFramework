@@ -2,24 +2,35 @@ package com.ey.automation.base;
 
 import com.ey.automation.config.ConfigReader;
 import com.ey.automation.config.Settings;
-import com.ey.automation.utilities.LogUtil;
-import org.testng.annotations.BeforeTest;
-
+import org.testng.annotations.*;
 import java.io.IOException;
+import java.time.Duration;
 
-public class TestInitialize extends FrameworkInitialize {
+public class TestInitialize {
+    public TestInitialize() {
+    }
 
-    @BeforeTest
+    @BeforeSuite(alwaysRun = true)
     public void Initialize() throws IOException {
-        //Initialize Config
-        ConfigReader.PopulateSettings();
-        //Logging
-        Settings.Logs = new LogUtil();
-        Settings.Logs.CreateLogFile();
-        Settings.Logs.Write("Framework Initialize");
-        Settings.Logs.Write("Test Cycle Created");
-        InitializeBrowser(Settings.BrowserType);
-        Settings.Logs.Write("Browser Initialized");
+        ConfigReader.readBrowserConfig();
+    }
 
+    @BeforeMethod(alwaysRun = true)
+    public void beforeTest() throws IOException {
+        LocalDriverContext.setDriver(FrameworkInitialize.InitializeBrowser(Settings.BrowserType));
+        LocalDriverContext.getDriver().get(Settings.BaseURL);
+        LocalDriverContext.getDriver().manage().window().maximize();
+        LocalDriverContext.getDriver().manage().timeouts().pageLoadTimeout(Duration.ofMinutes(2L));
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void afterTest(){
+//        if(scenario.isFailed()){
+//            final byte[] screenshot = ((TakesScreenshot) LocalDriverContext.getDriver()).getScreenshotAs(OutputType.BYTES);
+//            scenario.attach(screenshot,"image/png", "screenshot");
+//        }
+        if(LocalDriverContext.getDriver() != null){
+            LocalDriverContext.getDriver().quit();
+        }
     }
 }

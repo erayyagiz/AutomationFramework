@@ -1,7 +1,6 @@
 package com.ey.automation.controls.api;
 
 import com.ey.automation.controls.internals.Control;
-
 public final class ImplementedByProcessor {
 
     public ImplementedByProcessor() {

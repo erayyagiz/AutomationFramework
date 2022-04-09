@@ -2,15 +2,12 @@ package com.ey.automation.base;
 
 import com.ey.automation.controls.api.ControlFactory;
 
-public class Base {
+public class Base extends DriverContext {
+    public Base() {
+    }
 
-    public static BasePage CurrentPage;
-
-    public <TPage extends BasePage> TPage GetInstance(Class<TPage> page)
-    {
-        //Object obj = PageFactory.initElements(DriverContext.Driver, page);
-        //Custom control page factory initialization
-        Object obj = ControlFactory.initElements(DriverContext.Driver, page);
-        return page.cast(obj);
+    public <TPage extends BasePage> TPage GetInstance(Class<TPage> page) {
+        Object obj = ControlFactory.initElements(LocalDriverContext.getDriver(), page);
+        return (TPage) page.cast(obj);
     }
 }

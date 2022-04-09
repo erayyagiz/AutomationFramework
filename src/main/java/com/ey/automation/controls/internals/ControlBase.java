@@ -1,131 +1,113 @@
 package com.ey.automation.controls.internals;
 
-import com.ey.automation.base.DriverContext;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Coordinates;
+
 
 import java.util.List;
 
 public class ControlBase implements Control {
-    private final WebElement element;
-    DriverContext driverContext = new DriverContext();
 
-    public ControlBase(WebElement element) {
+
+    private final WebElement element;
+
+    public ControlBase(final WebElement element) {
         this.element = element;
     }
 
+    @Override
     public void click() {
-        this.driverContext.waitUntilElementClickable(this.element);
-        this.element.click();
+        element.click();
     }
 
+    @Override
     public void submit() {
-        this.element.submit();
+        element.submit();
     }
 
+    @Override
     public void sendKeys(CharSequence... charSequences) {
-        this.driverContext.waitUntilElementVisible(this.element);
-        this.element.sendKeys(charSequences);
+        element.sendKeys(charSequences);
     }
 
+    @Override
     public void clear() {
-        this.driverContext.waitUntilElementVisible(this.element);
-        this.element.clear();
+            element.clear();
     }
 
+    @Override
     public String getTagName() {
-        return this.element.getTagName();
+        return element.getTagName();
     }
 
+    @Override
     public String getAttribute(String s) {
-        this.driverContext.waitUntilElementVisible(this.element);
-        return this.element.getAttribute(s);
+        return element.getAttribute(s);
     }
 
+    @Override
     public boolean isSelected() {
-        return this.element.isSelected();
+        return element.isSelected();
     }
 
+    @Override
     public boolean isEnabled() {
-        return this.element.isEnabled();
+        return false;
     }
 
+    @Override
     public String getText() {
-        this.driverContext.waitUntilElementVisible(this.element);
-        return this.element.getText();
+        return element.getText();
     }
 
+    @Override
     public List<WebElement> findElements(By by) {
-        return this.element.findElements(by);
+        return element.findElements(by);
     }
 
+    @Override
     public WebElement findElement(By by) {
-        return this.element.findElement(by);
+        return element.findElement(by);
     }
 
+    @Override
     public boolean isDisplayed() {
-        return this.element.isDisplayed();
+        return element.isDisplayed();
     }
 
+    @Override
     public Point getLocation() {
-        return this.element.getLocation();
+        return null;
     }
 
+    @Override
     public Dimension getSize() {
-        return this.element.getSize();
+        return null;
     }
 
+    @Override
     public Rectangle getRect() {
-        return this.element.getRect();
+        return null;
     }
 
+    @Override
     public String getCssValue(String s) {
-        return this.element.getCssValue(s);
+        return null;
     }
 
+    @Override
     public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
-        return this.element.getScreenshotAs(outputType);
+        return null;
     }
 
+    @Override
     public Coordinates getCoordinates() {
         return null;
     }
 
+    @Override
     public WebElement getWrappedElement() {
-        return this.element;
+        return element;
     }
 
-    public ControlBase waitForVisible() {
-        this.driverContext.waitUntilElementVisible(this.element);
-        return this;
-    }
-
-    public ControlBase scrollToElement() {
-        this.driverContext.findAndScrollWebElement(this.element);
-        return this;
-    }
-
-    public void doubleClick() {
-        this.driverContext.doubleClickViaActions(this.element);
-    }
-
-    public ControlBase waitForInVisible() {
-        this.driverContext.waitUntilElementInVisible(this.element);
-        return this;
-    }
-
-    public ControlBase waitTextVisibleInElement(String text) {
-        this.driverContext.waitUntilElementTextVisible(this.element, text);
-        return this;
-    }
-
-    public ControlBase waitElementClickable() {
-        this.driverContext.waitUntilElementClickable(this.element);
-        return this;
-    }
-
-    public ControlBase waitForVisibleWithExactTime(int timeOutSeconds) {
-        this.driverContext.waitUntilElementClickableWithExactTime(this.element, timeOutSeconds);
-        return this;
-    }
-}
+ }

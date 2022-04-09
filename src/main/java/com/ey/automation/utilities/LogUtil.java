@@ -39,7 +39,7 @@ public class LogUtil {
     //Write message within the log
     public void Write(String message) {
         try {
-            formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy:HH_mm_ss");
+            formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy:HH_MM_SS");
             String dateFormat = date.format(formatter);
             bufferedWriter.write("["+dateFormat +"]: "+ message);
             bufferedWriter.newLine();

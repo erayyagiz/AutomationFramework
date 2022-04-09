@@ -3,7 +3,6 @@ package com.ey.automation.controls.api;
 import com.ey.automation.controls.internals.Control;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -57,4 +56,3 @@ public class ControlListHandler implements InvocationHandler {
         }
     }
 }
-

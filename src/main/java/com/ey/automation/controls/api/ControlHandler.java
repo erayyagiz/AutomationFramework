@@ -43,4 +43,3 @@ public class ControlHandler implements InvocationHandler {
         }
     }
 }
-

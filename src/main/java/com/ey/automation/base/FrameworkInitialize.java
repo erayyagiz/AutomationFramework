@@ -8,38 +8,47 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.safari.SafariDriver;
+import java.io.IOException;
 
-public class FrameworkInitialize extends Base {
 
-    public static void InitializeBrowser(BrowserType browserType) {
+public class FrameworkInitialize {
+
+    public FrameworkInitialize() {
+    }
+
+    public static WebDriver InitializeBrowser (BrowserType browserType) throws IOException {
         WebDriver driver = null;
-        switch (browserType) {
-            case Chrome: {
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions capability = new ChromeOptions();
-                capability.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-                capability.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-                driver = new ChromeDriver(capability);
-                driver.manage().window().maximize();
-                break;
-            }
-            case Firefox: {
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
-            }
-            case IE: {
-                if (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                    throw new WebDriverException("Your OS doesn't support Internet Explorer");
-                WebDriverManager.iedriver().setup();
-                driver = new InternetExplorerDriver();
-                break;
+        //Properties properties = readBrowserConfig();
+        //BrowserType browserType = BrowserType.valueOf(properties.getProperty("BrowserType"));
+        if (driver == null) {
+            switch (browserType) {
+                case Chrome:
+                    WebDriverManager.chromedriver().setup();
+                    ChromeOptions capability = new ChromeOptions();
+                    capability.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+                    capability.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+                    driver = new ChromeDriver(capability);
+                    break;
+                case Safari:
+                    if (!System.getProperty("os.name").toLowerCase().contains("mac"))
+                        throw new WebDriverException("Your OS doesn't support Safari");
+                    WebDriverManager.getInstance(SafariDriver.class).setup();
+                    driver = new SafariDriver();
+                    break;
+                case IE:
+                    if (!System.getProperty("os.name").toLowerCase().contains("windows"))
+                        throw new WebDriverException("Your OS doesn't support Internet Explorer");
+                    WebDriverManager.iedriver().setup();
+                    driver = new InternetExplorerDriver();
+                    break;
+                case Firefox:
+                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver();
+                    break;
             }
         }
-
-        //Set the Driver
-        DriverContext.setDriver(driver);
-        //Browser
-        DriverContext.Browser = new Browser(driver);
+        LocalDriverContext.setDriver(driver);
+        return driver;
     }
 }

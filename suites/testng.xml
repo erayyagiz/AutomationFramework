@@ -2,8 +2,7 @@
 <suite name="Fix" allow-return-values="true" verbose="1">
 
 
-    <test name="MTurkcellAdSoyadIleFaturaSorgulamaOdemeAkisi">
-        <parameter name="BrowserType" value= "Chrome"/>
+    <test name="TEST">
         <classes>
             <class name="steps.Home"/>
         </classes>

@@ -7,5 +7,6 @@ public class Settings
     public static String LogPath;
     public static BrowserType BrowserType;
     public static String BaseURL;
-
+    public static String Username;
+    public static String Password;
 }

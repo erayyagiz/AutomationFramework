@@ -14,6 +14,8 @@ public class ConfigReader {
         properties.load(inputStream);
         Settings.BrowserType = BrowserType.valueOf(properties.getProperty("BrowserType"));
         Settings.BaseURL = properties.getProperty("BaseURL");
+        Settings.Username = properties.getProperty("Username");
+        Settings.Password = properties.getProperty("Password");
         return properties;
     }
 }

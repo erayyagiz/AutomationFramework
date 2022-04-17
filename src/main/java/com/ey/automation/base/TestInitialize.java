@@ -20,7 +20,8 @@ public class TestInitialize {
         LocalDriverContext.setDriver(FrameworkInitialize.InitializeBrowser(Settings.BrowserType));
         LocalDriverContext.getDriver().get(Settings.BaseURL);
         LocalDriverContext.getDriver().manage().window().maximize();
-        LocalDriverContext.getDriver().manage().timeouts().pageLoadTimeout(Duration.ofMinutes(2L));
+        LocalDriverContext.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        //LocalDriverContext.getDriver().manage().timeouts().pageLoadTimeout(Duration.ofMinutes(2L));
     }
 
     @AfterMethod(alwaysRun = true)

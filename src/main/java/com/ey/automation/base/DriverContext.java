@@ -39,30 +39,16 @@ public class DriverContext {
 
     public void waitForPageToLoad() {
         try {
-            WebDriverWait wait = new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds));
-            JavascriptExecutor jsExecutor = (JavascriptExecutor)LocalDriverContext.getDriver();
-            ExpectedCondition jsLoad = (webDriver) -> {
-                return jsExecutor.executeScript("return document.readyState", new Object[0]).toString().equals("complete");
-            };
-
-            String jsReadyState;
-            do {
+            WebDriverWait wait = new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
+            JavascriptExecutor jsExecutor = (JavascriptExecutor) LocalDriverContext.getDriver();
+            ExpectedCondition<Boolean> jsLoad = webDriver -> ((JavascriptExecutor) LocalDriverContext.getDriver())
+                    .executeScript("return document.readyState").toString().equals("complete");
+            //Get JS Ready
+            boolean jsReady = jsExecutor.executeScript("return document.readyState").toString().equals("complete");
+            if (!jsReady)
                 wait.until(jsLoad);
-                jsReadyState = jsExecutor.executeScript("return document.readyState", new Object[0]).toString();
-            } while(!jsReadyState.equalsIgnoreCase("complete"));
-
-            this.driverContextLogger.info("Sayfa icindeki Java Scriptler basarili sekilde yuklenmistir..");
-            ExpectedCondition jQueryLoad = (webDriver) -> {
-                return (Long)jsExecutor.executeScript("return jQuery.active", new Object[0]) == 0L;
-            };
-
-            String jQueryCount;
-            do {
-                wait.until(jQueryLoad);
-                jQueryCount = jsExecutor.executeScript("return jQuery.active", new Object[0]).toString();
-            } while(Integer.parseInt(jQueryCount) != 0);
-
-            this.driverContextLogger.info("Sayfa icindeki JQuery'ler basarili sekilde yuklenmistir..");
+            else
+                this.driverContextLogger.info("Sayfa icindeki JQuery'ler basarili sekilde yuklenmistir..");
         } catch (Throwable var6) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var6));
             Assert.fail("DriverContext waitForPageToLoad methodunda HATA olustu !!");
@@ -71,7 +57,7 @@ public class DriverContext {
     }
     public void waitUntilElementVisible(WebElement elementFindBy) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.visibilityOf(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));

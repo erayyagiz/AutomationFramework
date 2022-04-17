@@ -25,7 +25,6 @@ import org.testng.Assert;
 
 public class DriverContext {
     final Logger driverContextLogger = LogManager.getLogger(DriverContext.class);
-    long timeOutInSeconds = 90L;
     String parentWindowId = null;
     ArrayList<String> windowList = new ArrayList();
 
@@ -68,7 +67,7 @@ public class DriverContext {
 
     public void waitUntilElementTextVisible(WebElement elementFindBy, String text) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.textToBePresentInElement(elementFindBy, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -79,7 +78,7 @@ public class DriverContext {
 
     public boolean waitUntilTextDisplayedEqualsIgnoreCaseByLocator(By locator, String text) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(this.checkLocatorTextEqualsIgnoreCase(locator, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -90,7 +89,7 @@ public class DriverContext {
 
     public boolean waitUntilTextDisplayedContainsByLocator(By locator, String text) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(this.checkLocatorTextContains(locator, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -133,7 +132,7 @@ public class DriverContext {
 
     public void waitUntilElementEnabled(By locator) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until((webDriver) -> {
                 return webDriver.findElement(locator).isEnabled();
             });
@@ -146,7 +145,7 @@ public class DriverContext {
 
     public void waitUntilPresenceOfElementByLocator(By locator) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -157,7 +156,7 @@ public class DriverContext {
 
     public void waitUntilElementClickable(WebElement elementFindBy) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.elementToBeClickable(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -168,7 +167,7 @@ public class DriverContext {
 
     public boolean waitUntilUrlContains(String expectedUrl) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(ExpectedConditions.urlContains(expectedUrl));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -177,20 +176,20 @@ public class DriverContext {
         }
     }
 
-    public void waitUntilFrameToBeAvailableAndSwitchToItByName(String frameName) {
+    public void waitUntilFrameToBeAvailableAndSwitchToItByWebelement(WebElement webElement) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
-            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameName));
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(webElement));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Beklenen frame isime gore: " + frameName + " bulunamadi !!");
+            Assert.fail("Beklenen frame weblemente gore: " + webElement + " bulunamadi !!");
         }
 
     }
 
     public void waitUntilFrameToBeAvailableAndSwitchToItByIndex(int frameIndex) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameIndex));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -201,7 +200,7 @@ public class DriverContext {
 
     public void waitUntilElementClickableWithExactTime(WebElement element, int exactTimeInSecond) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds((long) exactTimeInSecond))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) exactTimeInSecond)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -212,7 +211,7 @@ public class DriverContext {
 
     public void waitUntilVisibleElementWithExactTime(WebElement element, int exactTimeInSecond) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds((long) exactTimeInSecond))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) exactTimeInSecond)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
@@ -223,7 +222,7 @@ public class DriverContext {
 
     public boolean waitUntilElementAttributeContainsValue(WebElement element, String attribute, String expectedValue) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(ExpectedConditions.attributeContains(element, attribute, expectedValue));
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
@@ -234,7 +233,7 @@ public class DriverContext {
 
     public void waitUntilElementInVisible(WebElement elementFindBy) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.invisibilityOf(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
@@ -245,7 +244,7 @@ public class DriverContext {
 
     public void waitUntilSelectOptionsPopulated(Select select) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until((input) -> {
                 List<WebElement> options = select.getOptions();
                 return options.size() >= 1 ? select : null;
@@ -269,8 +268,7 @@ public class DriverContext {
                     break;
                 }
             }
-
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(this.timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds(this.timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.titleContains(title));
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
@@ -377,7 +375,7 @@ public class DriverContext {
 
     public List<WebElement> getListOfElement(By locator, int timeOutInSeconds) {
         try {
-            FluentWait<WebDriver> wait = (new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds((long) timeOutInSeconds))).pollingEvery(Duration.ofSeconds(5L)).withTimeout(Duration.ofSeconds((long) timeOutInSeconds)).ignoring(StaleElementReferenceException.class).ignoring(NoSuchElementException.class);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             List<WebElement> webElementList = (List) wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
             return webElementList;
         } catch (Throwable var5) {
@@ -401,8 +399,7 @@ public class DriverContext {
     }
 
     public boolean isElementPresent(By by, int timeOutInSeconds) {
-        FluentWait wait = (new FluentWait(LocalDriverContext.getDriver())).withTimeout(Duration.ofSeconds((long) timeOutInSeconds)).pollingEvery(Duration.ofMillis(500L)).ignoring(NotFoundException.class).ignoring(NoSuchElementException.class);
-
+        WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(by));
             return true;

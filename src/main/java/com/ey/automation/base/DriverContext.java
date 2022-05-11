@@ -394,7 +394,6 @@ public class DriverContext {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
             Assert.fail("Element bulunamadı edilememistir !!");
         }
-
         return element;
     }
 
@@ -439,6 +438,15 @@ public class DriverContext {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
             Assert.fail("Element: " + element + " click edilememistir !!");
         }
+    }
 
+    public void clickAndHold(WebElement element) {
+        try {
+            Actions actions = new Actions(LocalDriverContext.getDriver());
+            actions.clickAndHold(element).perform();
+        } catch (Throwable var3) {
+            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            Assert.fail("Element: " + element + " hold edilememistir !!");
+        }
     }
 }

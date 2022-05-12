@@ -1,24 +1,18 @@
 package com.ey.automation.base;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -447,6 +441,23 @@ public class DriverContext {
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
             Assert.fail("Element: " + element + " hold edilememistir !!");
+        }
+    }
+
+    public String generateRandom(String characters, int length){
+        try {
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+            for(int i = 0; i < length; i++) {
+                int index = random.nextInt(characters.length());
+                char randomChar = characters.charAt(index);
+                sb.append(randomChar);
+            }
+            String randomString = sb.toString();
+            return randomString;
+        } catch (Exception e) {
+            Assert.fail("Random string is not generated.");
+            return null;
         }
     }
 }

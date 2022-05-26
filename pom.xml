@@ -9,76 +9,92 @@
     <version>1.0.10</version>
     <packaging>jar</packaging>
 
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aspectj.version>1.9.6</aspectj.version>
+        <selenium-version>4.1.3</selenium-version>
+        <testng-version>7.5</testng-version>
+        <webdrivermanager-version>5.1.0</webdrivermanager-version>
+        <ashot-version>1.5.4</ashot-version>
+        <allure-testng-version>2.13.9</allure-testng-version>
+        <log4j-version>2.17.2</log4j-version>
+        <maven-surefire-plugin-version>3.0.0-M5</maven-surefire-plugin-version>
+        <jxl-version>2.6.12</jxl-version>
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.1.3</version>
+            <version>${selenium-version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.5</version>
+            <version>${testng-version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.1.0</version>
+            <version>${webdrivermanager-version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.17.2</version>
+            <version>${log4j-version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/info.cukes/cucumber-java -->
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>1.2.5</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/info.cukes/cucumber-junit -->
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>1.2.5</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/info.cukes/cucumber-testng -->
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-testng</artifactId>
-            <version>1.2.5</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl -->
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
             <artifactId>jxl</artifactId>
-            <version>2.6.12</version>
+            <version>${jxl-version}</version>
         </dependency>
         <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>5.7.0</version>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure-testng-version}</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>ru.yandex.qatools.ashot</groupId>
+            <artifactId>ashot</artifactId>
+            <version>${ashot-version}</version>
+        </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source> <!--For JAVA 8 use 1.8-->
+                    <target>8</target> <!--For JAVA 8 use 1.8-->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin-version}</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>TestNG.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
     <distributionManagement>
         <repository>
             <id>github</id>

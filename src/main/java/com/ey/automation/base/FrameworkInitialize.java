@@ -17,10 +17,8 @@ public class FrameworkInitialize {
     public FrameworkInitialize() {
     }
 
-    public static WebDriver InitializeBrowser (BrowserType browserType) throws IOException {
+    public static WebDriver InitializeBrowser (BrowserType browserType){
         WebDriver driver = null;
-        //Properties properties = readBrowserConfig();
-        //BrowserType browserType = BrowserType.valueOf(properties.getProperty("BrowserType"));
         if (driver == null) {
             switch (browserType) {
                 case Chrome:

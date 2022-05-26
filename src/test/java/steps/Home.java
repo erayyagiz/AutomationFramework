@@ -7,6 +7,7 @@ public class Home extends CustomTestBase {
 
     @Test
     public void runTest1(){
-        page().writeText();
+        page().writeText("HELLO WORLD!");
+        page().clickSearchButton();
     }
 }

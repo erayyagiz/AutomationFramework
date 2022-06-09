@@ -1,4 +1,4 @@
-package com.ey.automation.utilities;
+package com.ey.automation.listener;
 
 import com.ey.automation.base.TestInitialize;
 import io.qameta.allure.Allure;

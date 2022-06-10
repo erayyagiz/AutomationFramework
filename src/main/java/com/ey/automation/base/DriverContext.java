@@ -2,10 +2,11 @@ package com.ey.automation.base;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -30,6 +31,13 @@ public class DriverContext {
         this.driverContextLogger.info("Driver Navigated to URL: " + url);
     }
 
+    public void waitFor(long second) {
+        try {
+            TimeUnit.SECONDS.sleep(second);
+        } catch (Exception e) {
+        }
+    }
+
     public void waitForPageToLoad() {
         try {
             WebDriverWait wait = new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
@@ -41,22 +49,21 @@ public class DriverContext {
             if (!jsReady)
                 wait.until(jsLoad);
             else
-                this.driverContextLogger.info("Sayfa icindeki JQuery'ler basarili sekilde yuklenmistir..");
+                this.driverContextLogger.info("The page has been loaded successfully!");
         } catch (Throwable var6) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var6));
-            Assert.fail("DriverContext waitForPageToLoad methodunda HATA olustu !!");
+            Assert.fail("The page can not been loaded!");
         }
-
     }
+
     public void waitUntilElementVisible(WebElement elementFindBy) {
         try {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.visibilityOf(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + elementFindBy + " WebElement gorunur degil !!");
+            Assert.fail("The element: " + elementFindBy + " cannot be displayed!");
         }
-
     }
 
     public void waitUntilElementTextVisible(WebElement elementFindBy, String text) {
@@ -65,7 +72,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.textToBePresentInElement(elementFindBy, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Element: " + elementFindBy + " WebElement Text gorunur degil !! Beklenen Text: " + text);
+            Assert.fail("The element: " + elementFindBy + " cannot be displayed! The expected text: " + text);
         }
 
     }
@@ -76,7 +83,7 @@ public class DriverContext {
             return (Boolean) wait.until(this.checkLocatorTextEqualsIgnoreCase(locator, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Locator: " + locator + " Beklenen Text: " + text + " esitligi dogrulanamadi !!");
+            Assert.fail("The element: " + locator + " The expected text: " + text + " is not equal!");
             return false;
         }
     }
@@ -87,7 +94,7 @@ public class DriverContext {
             return (Boolean) wait.until(this.checkLocatorTextContains(locator, text));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Locator: " + locator + " Beklenen Text: " + text + " icermemektedir !!");
+            Assert.fail("The element: " + locator + " The expected text: " + text + " has not contain!");
             return false;
         }
     }
@@ -132,7 +139,7 @@ public class DriverContext {
             });
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Locator: " + locator + " WebElement Etkin degil !!");
+            Assert.fail("The element: " + locator + " is not enabled!");
         }
 
     }
@@ -143,7 +150,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Locator: " + locator + " WebElement HTML kodların (DOM) icerisinde bulunamadi !!");
+            Assert.fail("The element: " + locator + " can not be found in DOM!");
         }
 
     }
@@ -154,7 +161,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.elementToBeClickable(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + elementFindBy + " WebElement click edilebilir durumda degil !!");
+            Assert.fail("The element: " + elementFindBy + " is not clickable!");
         }
 
     }
@@ -165,7 +172,7 @@ public class DriverContext {
             return (Boolean) wait.until(ExpectedConditions.urlContains(expectedUrl));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Beklenen URL: " + expectedUrl + " Driver URL: " + LocalDriverContext.getDriver().getCurrentUrl() + "!!");
+            Assert.fail("The expected URL: " + expectedUrl + " The current URL: " + LocalDriverContext.getDriver().getCurrentUrl() + "!");
             return false;
         }
     }
@@ -176,7 +183,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(webElement));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Beklenen frame weblemente gore: " + webElement + " bulunamadi !!");
+            Assert.fail("The frame can not be found according to the expected element: " + webElement + "!");
         }
 
     }
@@ -187,7 +194,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameIndex));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Beklenen frame indexe gore: " + frameIndex + " bulunamadi !!");
+            Assert.fail("The frame can not be found according to the expected index: " + frameIndex + "!");
         }
 
     }
@@ -198,7 +205,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Element: " + element + " Verilen Sure: " + exactTimeInSecond + " zarfinda clickable durumda degil !!");
+            Assert.fail("The element: " + element + " can not be clickable in this time: " + exactTimeInSecond + "!");
         }
 
     }
@@ -209,7 +216,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Element: " + element + " Verilen Sure: " + exactTimeInSecond + " zarfinda gorunur durumda degil !!");
+            Assert.fail("The element: " + element + " is not visible in this time: " + exactTimeInSecond + "!");
         }
 
     }
@@ -220,7 +227,7 @@ public class DriverContext {
             return (Boolean) wait.until(ExpectedConditions.attributeContains(element, attribute, expectedValue));
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
-            Assert.fail("Beklenen Değer: " + expectedValue + " Element: " + element + "Attribute: " + attribute + " dogrulunamadi !!");
+            Assert.fail("The expected value: " + expectedValue + " The element: " + element + "The attribute: " + attribute + " can not be validated!");
             return false;
         }
     }
@@ -231,7 +238,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.invisibilityOf(elementFindBy));
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + elementFindBy + " WebElement gorunur durumdadir!!");
+            Assert.fail("The element: " + elementFindBy + " is visible!");
         }
 
     }
@@ -245,7 +252,7 @@ public class DriverContext {
             });
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Select Elementinin icinde secenek bulunmamaktadir !!");
+            Assert.fail("There is no any option in select element!");
         }
 
     }
@@ -266,7 +273,7 @@ public class DriverContext {
             wait.until(ExpectedConditions.titleContains(title));
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
-            Assert.fail("Acilan Tablar arasinda beklenen baslik: " + title + " bulunamamistir !!");
+            Assert.fail("The title: " + title + " can not be found in opened tabs!");
         }
 
     }
@@ -287,7 +294,7 @@ public class DriverContext {
             LocalDriverContext.getDriver().switchTo().window((String) this.windowList.get(this.windowList.size() - 1));
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Yeni sayfaya veya window'a gecerken HATA olustu !!");
+            Assert.fail("The new page can not be switched to!");
         }
 
     }
@@ -297,7 +304,7 @@ public class DriverContext {
             LocalDriverContext.getDriver().switchTo().window(this.parentWindowId);
         } catch (Throwable var2) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var2));
-            Assert.fail("Ana sayfaya veya window'a gecerken HATA olustu !!");
+            Assert.fail("The old page can not be switched to!");
         }
 
     }
@@ -318,7 +325,7 @@ public class DriverContext {
             return true;
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("URL: " + url + " belirtilen link acilirken HATA olustu !!");
+            Assert.fail("The URL: " + url + " can not be displayed!");
             return false;
         }
     }
@@ -329,7 +336,7 @@ public class DriverContext {
             jsExecutor.executeScript("arguments[0].scrollIntoView(true);", new Object[]{element});
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Acilan sayfada element: " + element + " scroll edilmesine ragmen bulunamamistir !!");
+            Assert.fail("The element: " + element + " can not be found!");
         }
 
     }
@@ -340,7 +347,7 @@ public class DriverContext {
             jsExecutor.executeScript("window.scrollBy(" + x + "," + y + ")", new Object[0]);
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Acilan sayfada X ve Y ekseninde scroll edilme sirasinda HATA olusmustur!!");
+            Assert.fail("The scrolling can not be done!");
         }
 
     }
@@ -351,7 +358,7 @@ public class DriverContext {
             action.dragAndDrop(from, to).build().perform();
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("From Element: " + from + " To Element: " + to + " Elementler drag and drop edilememistir !!");
+            Assert.fail("From Element: " + from + " To Element: " + to + " can not be dragged and dropped!");
         }
 
     }
@@ -362,7 +369,7 @@ public class DriverContext {
             builder.moveToElement(element).doubleClick().build().perform();
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + element + " double click edilememistir !!");
+            Assert.fail("The element: " + element + " can not be clicked!");
         }
 
     }
@@ -374,7 +381,18 @@ public class DriverContext {
             return webElementList;
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
-            Assert.fail("Element: " + locator + " List olarak get edilemedi!!");
+            Assert.fail("The element: " + locator + " can not be gotten as a list!");
+            return null;
+        }
+    }
+
+    public List<WebElement> presenceOfAllWait(By locator, int seconds) {
+        try {
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(seconds));
+            return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+        } catch (Exception ex) {
+            this.driverContextLogger.error("The element: "+locator+" cannot be found! The reason: "+ex.getMessage());
+            Assert.fail("The element: "+locator+" cannot be found! The reason: "+ex.getMessage());
             return null;
         }
     }
@@ -386,7 +404,7 @@ public class DriverContext {
             element = LocalDriverContext.getDriver().findElement(locator);
         } catch (Throwable var4) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
-            Assert.fail("Element bulunamadı edilememistir !!");
+            Assert.fail("The locator: "+locator+" can not be found!");
         }
         return element;
     }
@@ -419,7 +437,7 @@ public class DriverContext {
             builder.moveToElement(element).click().build().perform();
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + element + " click edilememistir !!");
+            Assert.fail("The element: " + element + " can not be clicked!");
         }
 
     }
@@ -430,7 +448,7 @@ public class DriverContext {
             executor.executeScript("arguments[0].click();", new Object[]{element});
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + element + " click edilememistir !!");
+            Assert.fail("The element: " + element + " can not be clicked!");
         }
     }
 
@@ -440,7 +458,7 @@ public class DriverContext {
             actions.clickAndHold(element).perform();
         } catch (Throwable var3) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
-            Assert.fail("Element: " + element + " hold edilememistir !!");
+            Assert.fail("The element: " + element + " can not be holded!");
         }
     }
 
@@ -456,8 +474,17 @@ public class DriverContext {
             String randomString = sb.toString();
             return randomString;
         } catch (Exception e) {
-            Assert.fail("Random string is not generated.");
+            Assert.fail("Random string can not be generated.");
             return null;
+        }
+    }
+
+    public Integer generateRandomInteger(int min, int max) {
+        try {
+            int random_int = (int)Math.floor(Math.random()*(max-min+1)+min);
+            return random_int;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

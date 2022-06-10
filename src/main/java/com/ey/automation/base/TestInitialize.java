@@ -31,10 +31,6 @@ public class TestInitialize {
     @Step("Close the browser")
     @AfterMethod(alwaysRun = true)
     public void afterTest(){
-//        if(scenario.isFailed()){
-//            final byte[] screenshot = ((TakesScreenshot) LocalDriverContext.getDriver()).getScreenshotAs(OutputType.BYTES);
-//            scenario.attach(screenshot,"image/png", "screenshot");
-//        }
         if(LocalDriverContext.getDriver() != null){
             LocalDriverContext.getDriver().quit();
         }

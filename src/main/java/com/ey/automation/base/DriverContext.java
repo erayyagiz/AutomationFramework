@@ -2,6 +2,7 @@ package com.ey.automation.base;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
@@ -28,6 +29,13 @@ public class DriverContext {
     public void navigateToUrl(String url) {
         LocalDriverContext.getDriver().get(url);
         this.driverContextLogger.info("Driver Navigated to URL: " + url);
+    }
+
+    public void waitFor(long second) {
+        try {
+            TimeUnit.SECONDS.sleep(second);
+        } catch (Exception e) {
+        }
     }
 
     public void waitForPageToLoad() {

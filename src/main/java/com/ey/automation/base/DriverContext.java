@@ -7,10 +7,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -274,6 +272,18 @@ public class DriverContext {
         } catch (Throwable var5) {
             this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
             Assert.fail("The title: " + title + " can not be found in opened tabs!");
+        }
+
+    }
+
+    public void openNewTabAndNavigateToURL(String url) {
+        try {
+            LocalDriverContext.getDriver().switchTo().newWindow(WindowType.TAB).navigate().to(url);
+            WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
+            wait.until(ExpectedConditions.urlContains(url));
+        } catch (Throwable var5) {
+            this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
+            Assert.fail("The url: " + url + " can not be found in opened tabs!");
         }
 
     }

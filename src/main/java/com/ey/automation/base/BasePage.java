@@ -1,10 +1,10 @@
 package com.ey.automation.base;
 
-public abstract class BasePage extends Base {
+public class BasePage extends Base {
     public BasePage() {
     }
 
-    public <TPage extends BasePage> TPage As(Class<TPage> pageInstance) {
+    public <TPage> TPage As(Class<TPage> pageInstance) {
         try {
             return (TPage) this;
         } catch (Exception var3) {

@@ -49,7 +49,7 @@ public class DriverContext {
             else
                 this.driverContextLogger.info("The page has been loaded successfully!");
         } catch (Throwable var6) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var6));
+            this.driverContextLogger.error("The page can not been loaded!");
             Assert.fail("The page can not been loaded!");
         }
     }
@@ -59,7 +59,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.visibilityOf(elementFindBy));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + elementFindBy + " cannot be displayed!");
             Assert.fail("The element: " + elementFindBy + " cannot be displayed!");
         }
     }
@@ -69,7 +69,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.textToBePresentInElement(elementFindBy, text));
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The element: " + elementFindBy + " cannot be displayed! The expected text: " + text);
             Assert.fail("The element: " + elementFindBy + " cannot be displayed! The expected text: " + text);
         }
 
@@ -80,7 +80,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(this.checkLocatorTextEqualsIgnoreCase(locator, text));
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The element: " + locator + " The expected text: " + text + " is not equal!");
             Assert.fail("The element: " + locator + " The expected text: " + text + " is not equal!");
             return false;
         }
@@ -91,7 +91,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(this.checkLocatorTextContains(locator, text));
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The element: " + locator + " The expected text: " + text + " has not contain!");
             Assert.fail("The element: " + locator + " The expected text: " + text + " has not contain!");
             return false;
         }
@@ -136,7 +136,7 @@ public class DriverContext {
                 return webDriver.findElement(locator).isEnabled();
             });
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + locator + " is not enabled!");
             Assert.fail("The element: " + locator + " is not enabled!");
         }
 
@@ -147,7 +147,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + locator + " can not be found in DOM!");
             Assert.fail("The element: " + locator + " can not be found in DOM!");
         }
 
@@ -158,7 +158,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.elementToBeClickable(elementFindBy));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + elementFindBy + " is not clickable!");
             Assert.fail("The element: " + elementFindBy + " is not clickable!");
         }
 
@@ -169,7 +169,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(ExpectedConditions.urlContains(expectedUrl));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The expected URL: " + expectedUrl + " The current URL: " + LocalDriverContext.getDriver().getCurrentUrl() + "!");
             Assert.fail("The expected URL: " + expectedUrl + " The current URL: " + LocalDriverContext.getDriver().getCurrentUrl() + "!");
             return false;
         }
@@ -180,7 +180,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(webElement));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The frame can not be found according to the expected element: " + webElement + "!");
             Assert.fail("The frame can not be found according to the expected element: " + webElement + "!");
         }
 
@@ -191,7 +191,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameIndex));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The frame can not be found according to the expected index: " + frameIndex + "!");
             Assert.fail("The frame can not be found according to the expected index: " + frameIndex + "!");
         }
 
@@ -202,7 +202,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The element: " + element + " can not be clickable in this time: " + exactTimeInSecond + "!");
             Assert.fail("The element: " + element + " can not be clickable in this time: " + exactTimeInSecond + "!");
         }
 
@@ -213,7 +213,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The element: " + element + " is not visible in this time: " + exactTimeInSecond + "!");
             Assert.fail("The element: " + element + " is not visible in this time: " + exactTimeInSecond + "!");
         }
 
@@ -224,7 +224,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             return (Boolean) wait.until(ExpectedConditions.attributeContains(element, attribute, expectedValue));
         } catch (Throwable var5) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
+            this.driverContextLogger.error("The expected value: " + expectedValue + " The element: " + element + "The attribute: " + attribute + " can not be validated!");
             Assert.fail("The expected value: " + expectedValue + " The element: " + element + "The attribute: " + attribute + " can not be validated!");
             return false;
         }
@@ -235,7 +235,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.invisibilityOf(elementFindBy));
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + elementFindBy + " is visible!");
             Assert.fail("The element: " + elementFindBy + " is visible!");
         }
 
@@ -249,7 +249,7 @@ public class DriverContext {
                 return options.size() >= 1 ? select : null;
             });
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("There is no any option in select element!");
             Assert.fail("There is no any option in select element!");
         }
 
@@ -270,7 +270,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.titleContains(title));
         } catch (Throwable var5) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
+            this.driverContextLogger.error("The title: " + title + " can not be found in opened tabs!");
             Assert.fail("The title: " + title + " can not be found in opened tabs!");
         }
 
@@ -282,7 +282,7 @@ public class DriverContext {
             WebDriverWait wait= new WebDriverWait(LocalDriverContext.getDriver(), Duration.ofSeconds(30));
             wait.until(ExpectedConditions.urlContains(url));
         } catch (Throwable var5) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
+            this.driverContextLogger.error("The url: " + url + " can not be found in opened tabs!");
             Assert.fail("The url: " + url + " can not be found in opened tabs!");
         }
 
@@ -303,7 +303,7 @@ public class DriverContext {
 
             LocalDriverContext.getDriver().switchTo().window((String) this.windowList.get(this.windowList.size() - 1));
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The new page can not be switched to!");
             Assert.fail("The new page can not be switched to!");
         }
 
@@ -313,7 +313,7 @@ public class DriverContext {
         try {
             LocalDriverContext.getDriver().switchTo().window(this.parentWindowId);
         } catch (Throwable var2) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var2));
+            this.driverContextLogger.error("The old page can not be switched to!");
             Assert.fail("The old page can not be switched to!");
         }
 
@@ -334,7 +334,7 @@ public class DriverContext {
 
             return true;
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The URL: " + url + " can not be displayed!");
             Assert.fail("The URL: " + url + " can not be displayed!");
             return false;
         }
@@ -345,7 +345,7 @@ public class DriverContext {
             JavascriptExecutor jsExecutor = (JavascriptExecutor) LocalDriverContext.getDriver();
             jsExecutor.executeScript("arguments[0].scrollIntoView(true);", new Object[]{element});
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + element + " can not be found!");
             Assert.fail("The element: " + element + " can not be found!");
         }
 
@@ -356,7 +356,7 @@ public class DriverContext {
             JavascriptExecutor jsExecutor = (JavascriptExecutor) LocalDriverContext.getDriver();
             jsExecutor.executeScript("window.scrollBy(" + x + "," + y + ")", new Object[0]);
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The scrolling can not be done!");
             Assert.fail("The scrolling can not be done!");
         }
 
@@ -367,7 +367,7 @@ public class DriverContext {
             Actions action = new Actions(LocalDriverContext.getDriver());
             action.dragAndDrop(from, to).build().perform();
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("From Element: " + from + " To Element: " + to + " can not be dragged and dropped!");
             Assert.fail("From Element: " + from + " To Element: " + to + " can not be dragged and dropped!");
         }
 
@@ -378,7 +378,7 @@ public class DriverContext {
             Actions builder = new Actions(LocalDriverContext.getDriver());
             builder.moveToElement(element).doubleClick().build().perform();
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + element + " can not be clicked!");
             Assert.fail("The element: " + element + " can not be clicked!");
         }
 
@@ -390,7 +390,7 @@ public class DriverContext {
             List<WebElement> webElementList = (List) wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
             return webElementList;
         } catch (Throwable var5) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var5));
+            this.driverContextLogger.error("The element: " + locator + " can not be gotten as a list!");
             Assert.fail("The element: " + locator + " can not be gotten as a list!");
             return null;
         }
@@ -413,7 +413,7 @@ public class DriverContext {
         try {
             element = LocalDriverContext.getDriver().findElement(locator);
         } catch (Throwable var4) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var4));
+            this.driverContextLogger.error("The locator: "+locator+" can not be found!");
             Assert.fail("The locator: "+locator+" can not be found!");
         }
         return element;
@@ -446,7 +446,7 @@ public class DriverContext {
             Actions builder = new Actions(LocalDriverContext.getDriver());
             builder.moveToElement(element).click().build().perform();
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + element + " can not be clicked!");
             Assert.fail("The element: " + element + " can not be clicked!");
         }
 
@@ -457,7 +457,7 @@ public class DriverContext {
             JavascriptExecutor executor = (JavascriptExecutor) LocalDriverContext.getDriver();
             executor.executeScript("arguments[0].click();", new Object[]{element});
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + element + " can not be clicked!");
             Assert.fail("The element: " + element + " can not be clicked!");
         }
     }
@@ -467,7 +467,7 @@ public class DriverContext {
             Actions actions = new Actions(LocalDriverContext.getDriver());
             actions.clickAndHold(element).perform();
         } catch (Throwable var3) {
-            this.driverContextLogger.error(ExceptionUtils.getMessage(var3));
+            this.driverContextLogger.error("The element: " + element + " can not be holded!");
             Assert.fail("The element: " + element + " can not be holded!");
         }
     }
@@ -495,6 +495,16 @@ public class DriverContext {
             return random_int;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteTextbox(WebElement webElement) {
+        try {
+            webElement.sendKeys(Keys.CONTROL+"a");
+            webElement.sendKeys(Keys.DELETE);
+        } catch (Exception e) {
+            driverContextLogger.error("The text box can not be deleted.");
+            Assert.fail("The text box can not be deleted.");
         }
     }
 }

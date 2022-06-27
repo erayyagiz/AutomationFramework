@@ -3,8 +3,9 @@ package com.ey.automation.base;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -51,6 +52,27 @@ public class DriverContext {
         } catch (Throwable var6) {
             this.driverContextLogger.error("The page can not been loaded!");
             Assert.fail("The page can not been loaded!");
+        }
+    }
+
+    public String getCookieName(String cookieName) {
+        try {
+            String cookie = LocalDriverContext.getDriver().manage().getCookieNamed(cookieName).toString();
+            String[] cookies = cookie.split(" ");
+            cookie = cookies[0];
+            Pattern pat = Pattern.compile("(?<="+cookieName+"=)(.*?)(?=;)");
+            Matcher m = pat.matcher(cookie);
+            if (m.find()) {
+                cookie = m.group(0);
+            }else {
+                this.driverContextLogger.error("The cookie is empty!");
+                Assert.fail("The cookie is empty!");
+            }
+            return cookie;
+        } catch (Throwable var6) {
+            this.driverContextLogger.error("The cookie can not be taken!");
+            Assert.fail("The cookie can not be taken!");
+            return null;
         }
     }
 

@@ -6,7 +6,7 @@
 
     <groupId>com.ey.framework</groupId>
     <artifactId>automation-framework</artifactId>
-    <version>1.0.19</version>
+    <version>1.0.21</version>
     <packaging>jar</packaging>
 
 
@@ -25,6 +25,9 @@
         <log4j-version>1.2.17</log4j-version>
         <maven-surefire-plugin-version>3.0.0-M5</maven-surefire-plugin-version>
         <jxl-version>2.6.12</jxl-version>
+        <restassured-version>4.4.0</restassured-version>
+        <googlejson-version>1.1.1</googlejson-version>
+        <json-version>20160810</json-version>
     </properties>
 
     <dependencies>
@@ -62,6 +65,26 @@
             <groupId>ru.yandex.qatools.ashot</groupId>
             <artifactId>ashot</artifactId>
             <version>${ashot-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${googlejson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json-version}</version>
         </dependency>
     </dependencies>
 

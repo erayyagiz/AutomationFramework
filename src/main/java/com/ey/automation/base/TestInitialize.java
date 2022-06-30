@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class TestInitialize {
     public static boolean TEST_ENABLED = Boolean.FALSE;
-    public static String certificatesTrustStorePath = System.getenv("JAVA_HOME")+"\\lib\\security\\cacerts";
+    public static String certificatesTrustStorePath = System.getenv("JAVA_JRE")+"\\lib\\security\\cacerts";
 
     public TestInitialize() {
     }

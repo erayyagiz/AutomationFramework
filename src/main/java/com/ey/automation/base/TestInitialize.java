@@ -9,6 +9,8 @@ import java.time.Duration;
 
 public class TestInitialize {
     public static boolean TEST_ENABLED = Boolean.FALSE;
+    public static String certificatesTrustStorePath = System.getenv("JAVA_HOME")+"\\lib\\security\\cacerts";
+
     public TestInitialize() {
     }
 
@@ -16,6 +18,7 @@ public class TestInitialize {
     public void Initialize() throws IOException {
         ConfigReader.readBrowserConfig();
         TEST_ENABLED = Boolean.TRUE;
+        System.setProperty("javax.net.ssl.trustStore", certificatesTrustStorePath);
     }
 
     @Step("Open the browser")

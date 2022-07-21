@@ -6,7 +6,7 @@
 
     <groupId>com.ey.framework</groupId>
     <artifactId>automation-framework</artifactId>
-    <version>1.0.23</version>
+    <version>1.0.24</version>
     <packaging>jar</packaging>
 
 
@@ -28,6 +28,7 @@
         <restassured-version>4.4.0</restassured-version>
         <googlejson-version>1.1.1</googlejson-version>
         <json-version>20160810</json-version>
+        <jayway-jsonpath-version>2.7.0</jayway-jsonpath-version>
     </properties>
 
     <dependencies>
@@ -85,6 +86,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>${json-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${jayway-jsonpath-version}</version>
         </dependency>
     </dependencies>
 
